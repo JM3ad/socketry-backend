@@ -11,4 +11,6 @@ COPY scripts /code/scripts
 
 RUN poetry install
 
+COPY app /code/app
+
 ENTRYPOINT ["/bin/sh", "./scripts/entrypoint.sh"]
