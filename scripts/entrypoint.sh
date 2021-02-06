@@ -1,1 +1,1 @@
-poetry run gunicorn --bind 0.0.0.0:$PORT "app.app:create_app()"
+poetry run gunicorn --bind 0.0.0.0:$PORT --worker-class eventlet "app.app:app"
