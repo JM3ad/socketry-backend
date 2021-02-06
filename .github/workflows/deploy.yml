@@ -17,4 +17,3 @@ jobs:
           heroku_email: "jack-mead@hotmail.co.uk"
           healthcheck: "https://socketry2.herokuapp.com/healthcheck"
           usedocker: true
-          docker_build_args: "--target prod"
