@@ -11,7 +11,7 @@ COPY pyproject.toml /code
 FROM base as dev
 RUN poetry install
 COPY app /code/app
-ENTRYPOINT ["poetry", "run", "flask", "run", "-h", "0.0.0.0"]
+ENTRYPOINT ["python", "app/app.py"]
 
 FROM dev as test
 ENTRYPOINT ["poetry", "run", "pytest"]
