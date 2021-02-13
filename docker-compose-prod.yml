@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      target: prod
+    env_file:
+      - .env
+    environment:
+      - PORT=5000
+    ports:
+      - 5000:5000

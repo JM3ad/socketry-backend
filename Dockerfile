@@ -5,15 +5,17 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 ENV PATH="/poetry/bin:${PATH}"
 WORKDIR /code
 
-COPY poetry.toml /code
-COPY pyproject.toml /code
+COPY pyproject.toml poetry.lock /code/
 
 FROM base as dev
 RUN poetry install
 COPY app /code/app
-ENTRYPOINT ["python", "app/app.py"]
+ENTRYPOINT ["poetry", "run", "flask", "run", "-h", "0.0.0.0"]
 
 FROM dev as test
+COPY app /code/app
+COPY tests /code/tests
+COPY conftest.py pytest.ini /code/
 ENTRYPOINT ["poetry", "run", "pytest"]
 
 FROM base as prod

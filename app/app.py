@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
 
 def create_app():
     app = Flask(__name__)
@@ -11,6 +11,7 @@ def create_app():
     @app.route('/healthcheck')
     def healthcheck():
         return 'Healthy'
+
     return app
 
 def create_socketio(app):
@@ -25,10 +26,21 @@ def create_socketio(app):
     def test_connect():
         emit('seen', {'message': 'connected'})
 
+    @socketio.on('join_room')
+    def on_join(data):
+        name = data['name']
+        room = data['room']
+        join_room(room)
+        send(name + ' has entered ' + room, room=room)
+
+    @socketio.on('leave_room')
+    def on_leave(data):
+        name = data['name']
+        room = data['room']
+        leave_room(room)
+        send(name + ' has left ' + room, room=room)
+
     return socketio
 
 app = create_app()
 socketio = create_socketio(app)
-
-if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0")
